@@ -3,20 +3,14 @@ using Jobby.Lib.Core.Model;
 using Jobby.Lib.Model.Enums;
 
 namespace Jobby.Lib.Runner{
-    public class JobbyJobQueue {
-        /*
-        Queue should; Contain a List<T> of task results for any given Interface
-        Queue should; Contain a List<Task> of running tasks
-            There will probably need to be multiple internal task lists for each type of interface implementation as well
-        */
-
+    public class JobbySqlJobQueue {
         //Sql Job Queue
         private List<Tuple<string, List<Task<TSQLJobResult>>>> _SqlJobQueueInternal {get;set;}
 
         //Sql Job Result Queue
         private List<Tuple<string, List<TSQLJobResult>>> _SqlJobResultInternal {get;set;}
 
-        public JobbyJobQueue() {
+        public JobbySqlJobQueue() {
             _SqlJobQueueInternal = new();
             _SqlJobResultInternal = new();
         }

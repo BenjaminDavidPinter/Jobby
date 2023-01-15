@@ -1,9 +1,4 @@
-
-using System;
-using System.Data;
-using System.Threading.Tasks;
 using Jobby.Lib.Core.Model;
-
 namespace Jobby.Lib.Core.JobTypes {
     public interface IJobbyTSQLJob {
         string JobName {get;set;}
