@@ -11,3 +11,16 @@ TODO:
 - Test best method for running multiple jobs (ThreadPool vs. Tasks)
 - Build TSQLJob and PowershellJob modules
 
+Probably need to reorganize the structure of the code; Right now, it feels a bit like a mishmosh of folders, but we should stick the standard; Service Layer/Model/Data Access
+
+Mental Map of the code so far
+```
+JobbyJobRunner
+    |_JobbyJobQueue
+        |_BackingTaskQueue
+        |_BackingResultsQueue
+```
+
+There are many job Runner types; That is where the distinction occurs. JobbySqlJobRunner, and JobbyTerminalJobRunner for instance.
+
+Maybe I should also include some kind of JobbyJobOrchestrator? Which can run all kinds of jobby jobs? This is probably a good idea because I think I want the end-user to really not focus on *running*, more job creation.
