@@ -4,6 +4,7 @@ namespace Jobby.Lib.Core.JobTypes {
         TimeSpan CycleTime {get;set;}
         TimeSpan Timeout {get;set;}
         string CommandText {get;set;}
+        string CommandFilePath {get;set;}
         string CommandResult {get;set;}
     }
 }

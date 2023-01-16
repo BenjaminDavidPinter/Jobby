@@ -5,11 +5,11 @@ using Jobby.Lib.Model.Enums;
 namespace Jobby.Lib.Runner{
     public class JobbySqlJobQueue {
         //Sql Job Queue
-        //TODOD: Dictionary best here? Benchmark it.
+        //TODO: Dictionary best here? Benchmark it.
         private List<Tuple<string, List<Task<TSQLJobResult>>>> _SqlJobQueueInternal {get;set;}
 
         //Sql Job Result Queue
-        //TODOD: Dictionary best here? Benchmark it.
+        //TODO: Dictionary best here? Benchmark it.
         private List<Tuple<string, List<TSQLJobResult>>> _SqlJobResultInternal {get;set;}
 
         public JobbySqlJobQueue() {
