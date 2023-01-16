@@ -10,8 +10,8 @@ namespace Jobby.Lib.Runner
 {
     public class JobbySqlJobRunner
     {
-        private readonly JobbySqlJobQueue _backingQueue;
-        public JobbySqlJobRunner(JobbySqlJobQueue backingQueue)
+        private readonly JobbyJobQueue<TSQLJobResult> _backingQueue;
+        public JobbySqlJobRunner(JobbyJobQueue<TSQLJobResult> backingQueue)
         {
             _backingQueue = backingQueue;
         }
@@ -24,7 +24,7 @@ namespace Jobby.Lib.Runner
             {
                 foreach (IJobbyTSQLJob job in applicableTypes)
                 {
-                    _backingQueue.RegisterNewSqlJobQueue(job.JobName);
+                    _backingQueue.InitializeJobQueues(job.JobName);
                     //TODO: B.Pinter  - Abstract away the code which actually sets up and runs the SQL
                     //                  procedure. Probably need a service layer for this.
                     _backingQueue.AddJobToQueue(job.JobName, new Task<TSQLJobResult>(() =>

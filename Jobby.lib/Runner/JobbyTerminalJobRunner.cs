@@ -11,8 +11,8 @@ namespace Jobby.Lib.Runner
 {
     public class JobbyTerminalJobRunner
     {
-        private readonly JobbySqlJobQueue _backingQueue;
-        public JobbyTerminalJobRunner(JobbySqlJobQueue backingQueue)
+        private readonly JobbyJobQueue<TerminalJobResult> _backingQueue;
+        public JobbyTerminalJobRunner(JobbyJobQueue<TerminalJobResult> backingQueue)
         {
             _backingQueue = backingQueue;
         }
@@ -23,12 +23,12 @@ namespace Jobby.Lib.Runner
             var applicableTypes = GetClassesForInterface(typeof(IJobbyTerminalJob));
             if (applicableTypes?.Count() > 0)
             {
-                foreach (IJobbyTSQLJob job in applicableTypes)
+                foreach (IJobbyTerminalJob job in applicableTypes)
                 {
-                    _backingQueue.RegisterNewSqlJobQueue(job.JobName);
+                    _backingQueue.InitializeJobQueues(job.JobName);
                     //TODO: B.Pinter  - Abstract away the code which actually sets up and runs the SQL
                     //                  procedure. Probably need a service layer for this.
-                    _backingQueue.AddJobToQueue(job.JobName, new Task<TSQLJobResult>(() =>
+                    _backingQueue.AddJobToQueue(job.JobName, new Task<TerminalJobResult>(() =>
                     {
                         //TODO: Run Terminal Job here
                         if(RuntimeInformation.IsOSPlatform(OSPlatform.OSX) || RuntimeInformation.IsOSPlatform(OSPlatform.Linux)){
