@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobby.lib", "Jobby.lib\Jobb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobby.tests", "Jobby.tests\Jobby.tests.csproj", "{D2507129-A5DF-49F6-82E9-539800A68D14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobby.worker", "Jobby.worker\Jobby.worker.csproj", "{56F9B10D-76E9-4958-A19C-F124940B75A0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
