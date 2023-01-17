@@ -27,3 +27,8 @@ There are many job Runner types; That is where the distinction occurs. JobbySqlJ
 Maybe I should also include some kind of JobbyJobOrchestrator? Which can run all kinds of jobby jobs? This is probably a good idea because I think I want the end-user to really not focus on *running*, more job creation.
 
 Also, why not I not start with Terminal jobs, I can't test SQL Jobs on this machine...lol
+
+1-17-2023 :
+I think at this point, I have the entire 'queueing' process in place. I can implement and IJobbyJob<ResultT> type and the runner should pick it up,
+initialize the queue, and begin to store all types directly in the processing queue. There's still two peices which are critical to the success of the project;
+1. I need to requeue jobs after they finish, and I need to place the results of a given job in its results queue.
