@@ -1,3 +1,5 @@
+using Jobby.lib.Core.JobTypes;
+
 namespace Jobby.Lib.Runner {
     public class JobbyJobRunner<T> : IJobbyJobRunner<T>
     {
@@ -16,12 +18,12 @@ namespace Jobby.Lib.Runner {
 
         //TODO: In order for this method to work, we need to abstract away IJobbyJob types into a single interface
         //      just like we did with the rest of the code.
-        public void RunJobs<G>(Func<Task<T>> body)
+        public void RunJobs(Task<T> body)
         {
-            var applicableTypes = GetClassesForInterface(typeof(G));
+            var applicableTypes = GetClassesForInterface(typeof(IJobbyJob<T>));
             if (applicableTypes?.Count() > 0)
             {
-                foreach (var job in applicableTypes)
+                foreach (IJobbyJob<T> job in applicableTypes)
                 {
                     _backingQueue.InitializeJobQueues(job.JobName);
                     //TODO: B.Pinter  - Abstract away the code which actually sets up and runs the SQL
