@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Jobby.Lib\Jobby.lib.csproj" />
+    <ProjectReference Include="..\Jobby.lib\Jobby.lib.csproj" />
   </ItemGroup>
 
 </Project>
