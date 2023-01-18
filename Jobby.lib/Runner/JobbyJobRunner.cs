@@ -15,9 +15,7 @@ namespace Jobby.Lib.Runner {
                 .SelectMany(s => s.GetTypes())
                 .Where(p => t.IsAssignableFrom(p));
         }
-
-        //TODO: In order for this method to work, we need to abstract away IJobbyJob types into a single interface
-        //      just like we did with the rest of the code.
+        
         public void RunJobs(Task<T> body)
         {
             var applicableTypes = GetClassesForInterface(typeof(IJobbyJob<T>));
