@@ -2,7 +2,7 @@ using Jobby.Lib.Runner;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jobby.tests;
-public class Tests
+public class CoreInitialization
 {
     ServiceCollection _collection {get;set;}
     ServiceProvider _provider {get;set;}
