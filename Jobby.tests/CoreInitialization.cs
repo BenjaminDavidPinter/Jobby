@@ -22,4 +22,11 @@ public class Tests
         var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
         Assert.IsNotNull(testRunner);
     }
+
+    [Test]
+    public void EnsureQueuesAreInitialized(){
+        var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
+        Assert.IsNotNull(testRunner._backingQueue._JobQueueInternal);
+        Assert.IsNotNull(testRunner._backingQueue._JobResultInternal);
+    }
 }
