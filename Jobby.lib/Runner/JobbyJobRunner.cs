@@ -3,9 +3,9 @@ using Jobby.lib.Core.JobTypes;
 namespace Jobby.Lib.Runner {
     public class JobbyJobRunner<T> : IJobbyJobRunner<T>
     {
-        public JobbyJobQueue<T> _backingQueue {get;set;}
+        public IJobbyJobQueue<T> _backingQueue {get;set;}
 
-        public JobbyJobRunner(JobbyJobQueue<T> backingQueue) {
+        public JobbyJobRunner(IJobbyJobQueue<T> backingQueue) {
             _backingQueue = backingQueue;
         }
 
