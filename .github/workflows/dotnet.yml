@@ -20,7 +20,9 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-    - name: Build
-      run: dotnet build Jobby.sln
+    - name: Build Lib
+      run: dotnet build Jobby.Lib/Jobby.lib.csproj
+    - name: Build Tests
+      run: dotnet build Jobby.tests/Jobby.tests.csproj
     - name: Test
       run: dotnet test --no-build --verbosity normal
