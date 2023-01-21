@@ -10,6 +10,8 @@ namespace Jobby.lib.Core.JobTypes
         string JobName { get; set; }
         TimeSpan CycleTime { get; set; }
         TimeSpan TimeOut { get; set; }
+        TimeOnly StartTime {get;set;}
+        TimeOnly EndTime {get;set;}
         T Run();
     }
 }

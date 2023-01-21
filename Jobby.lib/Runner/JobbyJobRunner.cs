@@ -25,8 +25,7 @@ namespace Jobby.Lib.Runner
             {
                 foreach (var job in applicableTypes)
                 {
-                    var instance = (IJobbyJob<T>)Activator.CreateInstance(job)
-                        ?? throw new Exception("Unable to create instance of job. Check configuration.");
+                    var instance = (IJobbyJob<T>)Activator.CreateInstance(job);
                     _backingQueue.InitializeJobQueues(instance.JobName);
                     //TODO: B.Pinter  - Abstract away the code which actually sets up and runs the SQL
                     //                  procedure. Probably need a service layer for this.
@@ -39,9 +38,26 @@ namespace Jobby.Lib.Runner
         {
             var taskToStart = new Task(() =>
             {
-                var results = job.Run();
-                _backingQueue._JobResultInternal.First(x => x.Item1 == job.JobName).Item2.Add(results);
-                System.Threading.Thread.Sleep((int)job.CycleTime.TotalMilliseconds);
+                var nowAsTimeOnly = new TimeOnly(DateTime.Now.Hour, DateTime.Now.Minute);
+                var isAfterStartTime = nowAsTimeOnly > job.StartTime;
+                var isBeforeEndTime = nowAsTimeOnly < job.EndTime;
+
+                if(isAfterStartTime && isBeforeEndTime){
+                    var results = job.Run();
+                    _backingQueue._JobResultInternal.First(x => x.Item1 == job.JobName).Item2.Add(results);
+                    System.Threading.Thread.Sleep((int)job.CycleTime.TotalMilliseconds);
+                }
+                else {
+                    var timeToWait = 0;
+                    if(!isAfterStartTime){
+                        timeToWait = (int)(job.StartTime - nowAsTimeOnly).TotalMilliseconds;
+                    }
+                    else if (!isBeforeEndTime) {
+                        timeToWait = (int)(new TimeOnly(23,59,59,999) - nowAsTimeOnly).TotalMilliseconds;
+                        timeToWait += (int)job.StartTime.ToTimeSpan().TotalMilliseconds;
+                    }
+                    System.Threading.Thread.Sleep(timeToWait);
+                }
                 _backingQueue._JobQueueInternal.First(x => x.Item1 == job.JobName).Item2.Add(CreateJobbyTask(job));
             });
 
