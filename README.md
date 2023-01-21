@@ -38,3 +38,14 @@ initialize the queue, and begin to store all types directly in the processing qu
 I started writing some unit tests today, to get a feel for the ergonomics of the system. I have to admit, I was unhappy with how it all fit together. There were some inconsistencies for how the jobs were meant to run. I refactored IJobbyJob<T> so that the job definition was held on the class, and not passed into the runner itself. The way it was setup before, the runner was constrained to one job type, which is not the intended scenario. It was meant to run jobs of similar type, but not function.
 
 However, after setting up a one hour focus timer, I was able to refactor everything, and get two sets of simple tests up; General DI tests to ensure the platform works with DI, and one string job which inserts a single string result into the results queue.
+
+### 1-21-2023 :
+Today we're going to try and implement requeue with continuation tasks. *Update*; Once again I find myself completely baffled by continuation tasks. I thought I could, on successful task completion, queue up another task recursively. However, the line I introduced;
+
+```csharp
+//Task created above
+
+task.ContinueWith(() => queueAnotherTask());
+```
+
+Caused several hundred thousand tasks to get queued. Strange...I'm not sure why. It's something I will look into in the future, because I strongly believe that it is the ideal way to implement "When this task is done, requeue it". But I'm just not sure exactly how to get that to work yet.
