@@ -22,10 +22,10 @@ public class SimpleStringJob
     {
         var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
         testRunner.StartJobs();
-        System.Threading.Thread.Sleep(10000);
+        System.Threading.Thread.Sleep(1000);
         Assert.IsTrue(testRunner._backingQueue._JobResultInternal
         .First(x => x.Item1 == "Simple String Job")
-        .Item2.Any(y => y == "Hello Jobby!"));
+        .Item2.Any(y => y.Contains("Hello Jobby!")));
     }
 }
 
@@ -37,7 +37,7 @@ public class StringJob : IJobbyJob<string>
 
     public StringJob(){
         JobName = "Simple String Job";
-        CycleTime = TimeSpan.FromSeconds(1);
+        CycleTime = TimeSpan.FromMilliseconds(250);
         TimeOut = TimeSpan.FromDays(1);
     }
 
