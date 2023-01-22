@@ -1,16 +1,19 @@
 using Jobby.Lib.Core.Model;
 
-namespace Jobby.Lib.Runner {
+namespace Jobby.Lib.Runner
+{
     public class JobbyJobQueue<T> : IJobbyJobQueue<T>
     {
         public List<Tuple<string, List<Task>>> _JobQueueInternal { get; set; }
         public List<Tuple<string, List<T>>> _JobResultInternal { get; set; }
+        public List<Tuple<string, List<Exception>>> _JobErrorQueueInternal { get; set; }
 
-        public JobbyJobQueue(){
+        public JobbyJobQueue()
+        {
             _JobQueueInternal = new();
             _JobResultInternal = new();
         }
-        
+
         public void AddJobToQueue(string queueName, Task job)
         {
             var jobQueue = _JobQueueInternal.First(x => x.Item1 == queueName);
@@ -31,6 +34,11 @@ namespace Jobby.Lib.Runner {
         {
             _JobQueueInternal.Add(Tuple.Create(queueName, new List<Task>()));
             _JobResultInternal.Add(Tuple.Create(queueName, new List<T>()));
+        }
+
+        public List<Exception> GetExceptionQueue(string queueName)
+        {
+            return _JobErrorQueueInternal.First(x => x.Item1 == queueName).Item2;
         }
 
         public void IssueJobQueueCommand(string queueName, JobQueueCommand command)

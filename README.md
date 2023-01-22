@@ -65,9 +65,12 @@ The problem with #2 is forcing a task to find itself within the backing queue. A
 ### 1-22-23
 I implemented queue clean up, but it might be a bit overkill; Right now, before any task waits it takes time to review and delete and completed tasks from the queue. I'm not sure how this is performance, wise, but with testing, it works.
 
+Moved requeue to continuation task.
+
+Addex exception job queue.
 
 ## Additional Features List
 ~~- Clean up task queue when a task is completed.~~
-- Some kind of way to elegantly fail a job.
+~~- Some kind of way to elegantly fail a job.~~
 - Better exception handling during job execution.
 - Specify number of threads on a job

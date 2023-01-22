@@ -54,9 +54,15 @@ namespace Jobby.Lib.Runner
 
                 if (isAfterStartTime && isBeforeEndTime)
                 {
-                    var results = job.Run();
-                    _backingQueue._JobResultInternal.First(x => x.Item1 == job.JobName).Item2.Add(results);
-                    _backingQueue._JobQueueInternal.First(x => x.Item1 == job.JobName).Item2.RemoveAll(x => x.Status == TaskStatus.RanToCompletion);
+                    try
+                    {
+                        var results = job.Run();
+                        _backingQueue.GetJobResultQueue(job.JobName).Add(results);
+                    }
+                    catch (Exception e)
+                    {
+                        _backingQueue.GetExceptionQueue(job.JobName).Add(e);
+                    }
                     System.Threading.Thread.Sleep((int)job.CycleTime.TotalMilliseconds);
                 }
                 else
@@ -71,10 +77,15 @@ namespace Jobby.Lib.Runner
                         timeToWait = (int)(new TimeOnly(23, 59, 59, 999) - nowAsTimeOnly).TotalMilliseconds;
                         timeToWait += (int)job.StartTime.ToTimeSpan().TotalMilliseconds;
                     }
-                    _backingQueue._JobQueueInternal.First(x => x.Item1 == job.JobName).Item2.RemoveAll(x => x.Status == TaskStatus.RanToCompletion);
                     System.Threading.Thread.Sleep(timeToWait);
                 }
-                _backingQueue._JobQueueInternal.First(x => x.Item1 == job.JobName).Item2.Add(CreateJobbyTask(job));
+            });
+
+
+            taskToStart.ContinueWith((x) =>
+            {
+                _backingQueue.GetJobQueue(job.JobName).RemoveAll(x => x.Status == TaskStatus.RanToCompletion);
+                _backingQueue.GetJobQueue(job.JobName).Add(CreateJobbyTask(job));
             });
 
             taskToStart.Start();
