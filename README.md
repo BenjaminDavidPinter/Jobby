@@ -70,3 +70,4 @@ I implemented queue clean up, but it might be a bit overkill; Right now, before 
 ~~- Clean up task queue when a task is completed.~~
 - Some kind of way to elegantly fail a job.
 - Better exception handling during job execution.
+- Specify number of threads on a job

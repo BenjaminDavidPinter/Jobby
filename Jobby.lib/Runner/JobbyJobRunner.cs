@@ -25,13 +25,25 @@ namespace Jobby.Lib.Runner
             {
                 foreach (var job in applicableTypes)
                 {
-                    var instance = (IJobbyJob<T>)Activator.CreateInstance(job);
+                    var instance = Activator.CreateInstance(job) as IJobbyJob<T>;
                     _backingQueue.InitializeJobQueues(instance.JobName);
                     _backingQueue.AddJobToQueue(instance.JobName, CreateJobbyTask(instance));
                 }
             }
         }
 
+
+        /*
+        Recursive method which generates jobs for the _backingQueue. 
+
+        TODO:
+            - Better error handling
+            - Right now, the backing queue which holds jobs (_backingQueue.JobQueueInternal), is cleaned up after each child task of the same type
+                is completed by running _backingQueue._JobQueueInternal.First(x => x.Item1 == job.JobName).Item2.RemoveAll(x => x.Status == TaskStatus.RanToCompletion);.
+                Because there may be multiple instances of the same task running within a queue, it might be dangerous to allow them all to try and clean this queue, 
+                at the same time.
+            
+        */
         private Task CreateJobbyTask(IJobbyJob<T> job)
         {
             var taskToStart = new Task(() =>
@@ -40,19 +52,23 @@ namespace Jobby.Lib.Runner
                 var isAfterStartTime = nowAsTimeOnly > job.StartTime;
                 var isBeforeEndTime = nowAsTimeOnly < job.EndTime;
 
-                if(isAfterStartTime && isBeforeEndTime){
+                if (isAfterStartTime && isBeforeEndTime)
+                {
                     var results = job.Run();
                     _backingQueue._JobResultInternal.First(x => x.Item1 == job.JobName).Item2.Add(results);
                     _backingQueue._JobQueueInternal.First(x => x.Item1 == job.JobName).Item2.RemoveAll(x => x.Status == TaskStatus.RanToCompletion);
                     System.Threading.Thread.Sleep((int)job.CycleTime.TotalMilliseconds);
                 }
-                else {
+                else
+                {
                     var timeToWait = 0;
-                    if(!isAfterStartTime){
+                    if (!isAfterStartTime)
+                    {
                         timeToWait = (int)(job.StartTime - nowAsTimeOnly).TotalMilliseconds;
                     }
-                    else if (!isBeforeEndTime) {
-                        timeToWait = (int)(new TimeOnly(23,59,59,999) - nowAsTimeOnly).TotalMilliseconds;
+                    else if (!isBeforeEndTime)
+                    {
+                        timeToWait = (int)(new TimeOnly(23, 59, 59, 999) - nowAsTimeOnly).TotalMilliseconds;
                         timeToWait += (int)job.StartTime.ToTimeSpan().TotalMilliseconds;
                     }
                     _backingQueue._JobQueueInternal.First(x => x.Item1 == job.JobName).Item2.RemoveAll(x => x.Status == TaskStatus.RanToCompletion);

@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Jobby.tests;
 public class SimpleStringJob
 {
-    ServiceCollection _collection {get;set;}
-    ServiceProvider _provider {get;set;}
-    
+    ServiceCollection _collection { get; set; }
+    ServiceProvider _provider { get; set; }
+
     [SetUp]
     public void Setup()
     {
@@ -24,23 +24,22 @@ public class SimpleStringJob
         var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
         testRunner.StartJobs();
         System.Threading.Thread.Sleep(1000);
-        Assert.IsTrue(testRunner._backingQueue._JobResultInternal
-        .First(x => x.Item1 == "Simple String Job")
-        .Item2.Any(y => y.Contains("Hello Jobby!")));
+        Assert.That(testRunner._backingQueue._JobResultInternal.First(x => x.Item1 == "Simple String Job").Item2.Any(y => y.Contains("Hello Jobby!"))
+        , Is.True);
     }
 }
 
 public class StringJob : IJobbyJob<string>
 {
-    public string JobName {get => "Simple String Job";}
-    public TimeSpan CycleTime {get => TimeSpan.FromMilliseconds(100);}
-    public TimeSpan TimeOut {get => TimeSpan.FromDays(1);}
-    public TimeOnly StartTime {get => new TimeOnly(00,00);}
-    public TimeOnly EndTime {get => new TimeOnly(23,59);}
-    public Guid Id {get => Guid.NewGuid(); }
+    public string JobName { get => "Simple String Job"; }
+    public TimeSpan CycleTime { get => TimeSpan.FromMilliseconds(100); }
+    public TimeSpan TimeOut { get => TimeSpan.FromDays(1); }
+    public TimeOnly StartTime { get => new(00, 00); }
+    public TimeOnly EndTime { get => new(23, 59); }
+    public Guid Id { get => Guid.NewGuid(); }
 
     public string Run()
     {
-        return $"Hello Jobby! {DateTime.Now.ToString()}";
+        return $"Hello Jobby! {DateTime.Now}";
     }
 }
