@@ -43,6 +43,7 @@ namespace Jobby.Lib.Runner
                 if(isAfterStartTime && isBeforeEndTime){
                     var results = job.Run();
                     _backingQueue._JobResultInternal.First(x => x.Item1 == job.JobName).Item2.Add(results);
+                    _backingQueue._JobQueueInternal.First(x => x.Item1 == job.JobName).Item2.RemoveAll(x => x.Status == TaskStatus.RanToCompletion);
                     System.Threading.Thread.Sleep((int)job.CycleTime.TotalMilliseconds);
                 }
                 else {
@@ -54,6 +55,7 @@ namespace Jobby.Lib.Runner
                         timeToWait = (int)(new TimeOnly(23,59,59,999) - nowAsTimeOnly).TotalMilliseconds;
                         timeToWait += (int)job.StartTime.ToTimeSpan().TotalMilliseconds;
                     }
+                    _backingQueue._JobQueueInternal.First(x => x.Item1 == job.JobName).Item2.RemoveAll(x => x.Status == TaskStatus.RanToCompletion);
                     System.Threading.Thread.Sleep(timeToWait);
                 }
                 _backingQueue._JobQueueInternal.First(x => x.Item1 == job.JobName).Item2.Add(CreateJobbyTask(job));

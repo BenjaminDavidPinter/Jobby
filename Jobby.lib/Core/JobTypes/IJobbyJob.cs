@@ -12,6 +12,7 @@ namespace Jobby.lib.Core.JobTypes
         TimeSpan TimeOut { get; }
         TimeOnly StartTime { get; }
         TimeOnly EndTime { get; }
+        Guid Id {get;}
         T Run();
     }
 }

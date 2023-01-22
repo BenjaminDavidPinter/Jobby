@@ -33,10 +33,11 @@ public class SimpleStringJob
 public class StringJob : IJobbyJob<string>
 {
     public string JobName {get => "Simple String Job";}
-    public TimeSpan CycleTime {get => TimeSpan.FromMilliseconds(250);}
+    public TimeSpan CycleTime {get => TimeSpan.FromMilliseconds(100);}
     public TimeSpan TimeOut {get => TimeSpan.FromDays(1);}
     public TimeOnly StartTime {get => new TimeOnly(00,00);}
     public TimeOnly EndTime {get => new TimeOnly(23,59);}
+    public Guid Id {get => Guid.NewGuid(); }
 
     public string Run()
     {
