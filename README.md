@@ -52,8 +52,6 @@ Caused several hundred thousand tasks to get queued. Strange...I'm not sure why.
 
 The next feature I want to implement will be scheduling. Right now, you can queue a task, and have it run every so often, but another critical feature will be the ability to say 'I need this to only run between 9am and 5pm'. I originally wanted to put this information in attributes on IJobbyJob<T>, but I cannot enforce the implementation of that. Instead, I'll probably make it another attribute on the interface. I want to avoid scenarios where someone has to 'search' for a way to do something. So enforcing it at the interface level is a good way to bring visibility to the feature.
 
-### 1-22-2023
-
 Implemented scheduled jobs. Learned about a new object type; ```TimeOnly```, which only represents a time of day, and nothing else. Super useful for exactly this. Most of the implementation was spent trying to wrap my head around doing time math. 
 
 The next thing I need to implement is queue clean up. Right now, if you let a task run 1000 times, 1000 empty tasks live in the task queue. We need some way to clean up completed tasks.
