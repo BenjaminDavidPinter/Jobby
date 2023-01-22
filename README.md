@@ -62,6 +62,11 @@ Some options I'm considering;
 
 The problem with #2 is forcing a task to find itself within the backing queue. All jobs just live within their parent queue. I need some kind of mechanism to ID the tasks when they get added. Like IJobbyJobM<T> needs some kind of behavoir on construction to ID itself. But the ideal way to do *that* is probably implement IJobbyJob<T> from JobbyJob<T>, and perform a default constructor. I'm sure C# interfaces have some horrid 2023-esque way to do this, but IDK if it would be ideal.
 
+### 1-22-23
+I implemented queue clean up, but it might be a bit overkill; Right now, before any task waits it takes time to review and delete and completed tasks from the queue. I'm not sure how this is performance, wise, but with testing, it works.
+
+
 ## Additional Features List
+~~- Clean up task queue when a task is completed.~~
 - Some kind of way to elegantly fail a job.
 - Better exception handling during job execution.
