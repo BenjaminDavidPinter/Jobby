@@ -70,7 +70,7 @@ Moved requeue to continuation task.
 Addex exception job queue.
 
 ## Additional Features List
-~~- Clean up task queue when a task is completed.~~
-~~- Some kind of way to elegantly fail a job.~~
+- ~~Clean up task queue when a task is completed.~~
+- ~~Some kind of way to elegantly fail a job.~~
 - Better exception handling during job execution.
 - Specify number of threads on a job
