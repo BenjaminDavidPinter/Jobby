@@ -31,19 +31,11 @@ public class SimpleStringJob
 
 public class StringJob : IJobbyJob<string>
 {
-    public string JobName {get;set;}
-    public TimeSpan CycleTime {get;set;}
-    public TimeSpan TimeOut {get;set;}
-    public TimeOnly StartTime {get;set;}
-    public TimeOnly EndTime {get;set;}
-
-    public StringJob(){
-        JobName = "Simple String Job";
-        CycleTime = TimeSpan.FromMilliseconds(250);
-        TimeOut = TimeSpan.FromDays(1);
-        StartTime = new TimeOnly(00,00);
-        EndTime = new TimeOnly(23,59);
-    }
+    public string JobName {get => "Simple String Job";}
+    public TimeSpan CycleTime {get => TimeSpan.FromMilliseconds(250);}
+    public TimeSpan TimeOut {get => TimeSpan.FromDays(1);}
+    public TimeOnly StartTime {get => new TimeOnly(00,00);}
+    public TimeOnly EndTime {get => new TimeOnly(23,59);}
 
     public string Run()
     {

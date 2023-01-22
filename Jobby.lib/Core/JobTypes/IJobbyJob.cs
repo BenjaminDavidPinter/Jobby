@@ -7,11 +7,11 @@ namespace Jobby.lib.Core.JobTypes
     //      only between 9am and 11pm, we need to support that.
 	public interface IJobbyJob<T>
 	{
-        string JobName { get; set; }
-        TimeSpan CycleTime { get; set; }
-        TimeSpan TimeOut { get; set; }
-        TimeOnly StartTime {get;set;}
-        TimeOnly EndTime {get;set;}
+        string JobName { get; }
+        TimeSpan CycleTime { get; }
+        TimeSpan TimeOut { get; }
+        TimeOnly StartTime { get; }
+        TimeOnly EndTime { get; }
         T Run();
     }
 }
