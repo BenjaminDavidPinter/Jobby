@@ -7,6 +7,7 @@ public class SimpleStringJob
 {
     ServiceCollection _collection {get;set;}
     ServiceProvider _provider {get;set;}
+    
     [SetUp]
     public void Setup()
     {

@@ -27,8 +27,6 @@ namespace Jobby.Lib.Runner
                 {
                     var instance = (IJobbyJob<T>)Activator.CreateInstance(job);
                     _backingQueue.InitializeJobQueues(instance.JobName);
-                    //TODO: B.Pinter  - Abstract away the code which actually sets up and runs the SQL
-                    //                  procedure. Probably need a service layer for this.
                     _backingQueue.AddJobToQueue(instance.JobName, CreateJobbyTask(instance));
                 }
             }

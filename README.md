@@ -54,6 +54,12 @@ The next feature I want to implement will be scheduling. Right now, you can queu
 
 ### 1-22-2023
 
-Implemented scheduled jobs. Learned about a new object type; ```TimeOnly```, which only represents a time of day, and nothing else. Super useful for exactly this.
+Implemented scheduled jobs. Learned about a new object type; ```TimeOnly```, which only represents a time of day, and nothing else. Super useful for exactly this. Most of the implementation was spent trying to wrap my head around doing time math. 
 
-Most of the implementation was spent trying to wrap my head around doing time math. 
+The next thing I need to implement is queue clean up. Right now, if you let a task run 1000 times, 1000 empty tasks live in the task queue. We need some way to clean up completed tasks.
+
+Some options I'm considering;
+1. Child thread which observes the state of all queues, and cleans them up (expensive, but easy to implement);
+2. Somehow, have tasks remove themselves from the queue once they are completed (more complicated, probably better).
+
+The problem with #2 is forcing a task to find itself within the backing queue. All jobs just live within their parent queue. I need some kind of mechanism to ID the tasks when they get added. Like IJobbyJobM<T> needs some kind of behavoir on construction to ID itself. But the ideal way to do *that* is probably implement IJobbyJob<T> from JobbyJob<T>, and perform a default constructor. I'm sure C# interfaces have some horrid 2023-esque way to do this, but IDK if it would be ideal.
