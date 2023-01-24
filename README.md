@@ -79,8 +79,33 @@ Next I think I need to work on failures; What should happen when a job fails? Sh
 
 I know that I could potentially mandate at the interface level, some kind of ```Func<T>``` which the JobRunner could use in continuation clauses.
 
+I'm imagining something like this;
+```csharp
+public enum StandardTaskOperation {
+    NoOp = 0,
+    RequeueStandard = 1,
+    RequeueExtendedWaitTime = 2,
+    CancelFutureTasks = 3
+}
+
+public void OnSuccess(Func<T> handler, StandardTaskOperation operation = 0) => {
+    //Do what you want on success
+}
+
+/*
+Meanwhile...in JobbyJobRunner
+*/
+Task jobbyTask = New Task(() => ...);
+Task.ContinueWith(job.OnSuccess, TaskContinuationOptions.RanToCompletion);
+```
+
+Basically just let the developer dictatate what happens when the task is completed, with some standard options available.
+
 ## Additional Features List
 - ~~Clean up task queue when a task is completed.~~
 - ~~Some kind of way to elegantly fail a job.~~
 - Ability to cancel a job after N failures
 - ~~Specify number of threads on a job~~
+- Event Driven Task Continuations
+    - Expose methods through IJobbyJob<T> which allow the user to control what happens when a jobby job fails/succeeds.
+        - These methods should have some standard options for; 'RequeueJob', 'Wait(X Mills)' etc.
