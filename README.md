@@ -75,8 +75,12 @@ Let's see if it's possible for me to add an option to spin a given thread up twi
 That was almost a little too easy. Since the 'requeue' function is split from the method which queues the initial job
 group, I was able to add code which simply adds N jobs to the queue on first boot, and let them requeue themselves independenly.
 
+Next I think I need to work on failures; What should happen when a job fails? Should it try again after the designated amount of time? Should I provide a mechanism to support 'on failure' 'on success' etc, calls? 
+
+I know that I could potentially mandate at the interface level, some kind of ```Func<T>``` which the JobRunner could use in continuation clauses.
+
 ## Additional Features List
 - ~~Clean up task queue when a task is completed.~~
 - ~~Some kind of way to elegantly fail a job.~~
-- Better exception handling during job execution.
+- Ability to cancel a job after N failures
 - ~~Specify number of threads on a job~~
