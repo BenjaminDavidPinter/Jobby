@@ -27,7 +27,10 @@ namespace Jobby.Lib.Runner
                 {
                     var instance = Activator.CreateInstance(job) as IJobbyJob<T>;
                     _backingQueue.InitializeJobQueues(instance.JobName);
-                    _backingQueue.AddJobToQueue(instance.JobName, CreateJobbyTask(instance));
+                    for (int i = 0; i < instance.ConcurrentThreads; i++)
+                    {
+                        _backingQueue.AddJobToQueue(instance.JobName, CreateJobbyTask(instance));
+                    }
                 }
             }
         }

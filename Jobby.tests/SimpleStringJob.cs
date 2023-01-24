@@ -31,12 +31,13 @@ public class SimpleStringJob
 
 public class StringJob : IJobbyJob<string>
 {
-    public string JobName { get => "Simple String Job"; }
-    public TimeSpan CycleTime { get => TimeSpan.FromMilliseconds(100); }
-    public TimeSpan TimeOut { get => TimeSpan.FromDays(1); }
-    public TimeOnly StartTime { get => new(00, 00); }
-    public TimeOnly EndTime { get => new(23, 59); }
-    public Guid Id { get => Guid.NewGuid(); }
+    public string JobName => "Simple String Job";
+    public TimeSpan CycleTime => TimeSpan.FromMilliseconds(100);
+    public TimeSpan TimeOut => TimeSpan.FromDays(1);
+    public TimeOnly StartTime => new(00, 00);
+    public TimeOnly EndTime => new(23, 59);
+    public Guid Id => Guid.NewGuid();
+    public int ConcurrentThreads => 2;
 
     public string Run()
     {

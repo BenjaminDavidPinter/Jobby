@@ -69,8 +69,14 @@ Moved requeue to continuation task.
 
 Addex exception job queue.
 
+### 1-23-23
+Let's see if it's possible for me to add an option to spin a given thread up twice. 
+
+That was almost a little too easy. Since the 'requeue' function is split from the method which queues the initial job
+group, I was able to add code which simply adds N jobs to the queue on first boot, and let them requeue themselves independenly.
+
 ## Additional Features List
 - ~~Clean up task queue when a task is completed.~~
 - ~~Some kind of way to elegantly fail a job.~~
 - Better exception handling during job execution.
-- Specify number of threads on a job
+- ~~Specify number of threads on a job~~
