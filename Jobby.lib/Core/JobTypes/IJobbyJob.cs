@@ -5,7 +5,7 @@ namespace Jobby.lib.Core.JobTypes
     {
         Guid Id { get; }
         string JobName { get; }
-        TimeSpan CycleTime => TimeSpan.FromSeconds(1);
+        TimeSpan CycleTime { get; }
         TimeSpan TimeOut => TimeSpan.FromHours(1);
         TimeOnly StartTime => new(00, 00);
         TimeOnly EndTime => new(23, 59);
