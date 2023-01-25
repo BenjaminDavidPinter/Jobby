@@ -38,6 +38,7 @@ public class StringJob : IJobbyJob<string>
     public TimeOnly EndTime => new(23, 59);
     public Guid Id => Guid.NewGuid();
     public int ConcurrentThreads => 2;
+    public List<(Func<string>, TaskContinuationOptions)> Continuations => null!;
 
     public string Run()
     {
