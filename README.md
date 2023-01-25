@@ -101,6 +101,21 @@ Task.ContinueWith(job.OnSuccess, TaskContinuationOptions.RanToCompletion);
 
 Basically just let the developer dictatate what happens when the task is completed, with some standard options available.
 
+### 1-24-2023
+
+While roughing in the implementation for continuation tasks, I wanted to clean up the implementation layer.
+
+I'm noticing a trend; As an IJobbyJob<T> gains more features, the list of interface fields grows. Naturally, interfaces force concrete classes to implement the the getters on those properties. 
+
+I've never been a huge fan of interface implementation, but in this instance, it makes sense. Hide the lesser-used properties by providing a default implementation. For example, ConcurrentThreads. Not all jobs may be interested in running on two threads, so let's just set that value to 1 by default.
+
+This all leads to the way the continuation tasks are implemented;
+```csharp
+public List<(Func<string>, TaskContinuationOptions)> Continuations => new();
+```
+
+The idea being that, should users want to, they can implement some kind of behavoir on completion, otherwise, they don't even need to specify the property value.
+
 ## Additional Features List
 - ~~Clean up task queue when a task is completed.~~
 - ~~Some kind of way to elegantly fail a job.~~
