@@ -134,3 +134,4 @@ When I start two instances of tasks for this object, is it truly a 'thread'? Thi
 - Event Driven Task Continuations
     - Expose methods through IJobbyJob<T> which allow the user to control what happens when a jobby job fails/succeeds.
         - These methods should have some standard options for; 'RequeueJob', 'Wait(X Mills)' etc.
+- Add custom run conditions; ```Func<bool>``` which users can implement to stop their jobs from running accoding to some custom condition.
