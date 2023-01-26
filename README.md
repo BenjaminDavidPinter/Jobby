@@ -116,6 +116,8 @@ public List<(Func<string>, TaskContinuationOptions)> Continuations => new();
 
 The idea being that, should users want to, they can implement some kind of behavoir on completion, otherwise, they don't even need to specify the property value.
 
+### 1-25-23
+
 I should do some research into whether this line is actually what it implies;
 
 ```csharp
