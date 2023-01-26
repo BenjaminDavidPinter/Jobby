@@ -11,7 +11,7 @@ namespace Jobby.lib.Core.JobTypes
         TimeOnly EndTime => new(23, 59);
         int ConcurrentThreads => 1;
         T Run();
-        List<(Func<T>, TaskContinuationOptions)> Continuations => new();
+        List<(Action<Task, object?>, TaskContinuationOptions)> Continuations => new();
     }
 }
 

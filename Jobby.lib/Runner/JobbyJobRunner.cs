@@ -91,6 +91,11 @@ namespace Jobby.Lib.Runner
                 _backingQueue.GetJobQueue(job.JobName).Add(CreateJobbyTask(job));
             });
 
+            foreach (var cont in job.Continuations)
+            {
+                taskToStart.ContinueWith(cont.Item1, cont.Item2);
+            }
+
             taskToStart.Start();
 
             return taskToStart;
