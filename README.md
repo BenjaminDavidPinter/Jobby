@@ -116,6 +116,14 @@ public List<(Func<string>, TaskContinuationOptions)> Continuations => new();
 
 The idea being that, should users want to, they can implement some kind of behavoir on completion, otherwise, they don't even need to specify the property value.
 
+I should do some research into whether this line is actually what it implies;
+
+```csharp
+public int ConcurrentThreads => 2;
+```
+When I start two instances of tasks for this object, is it truly a 'thread'? This is something I need to look into before I call it finished.
+
+
 ## Additional Features List
 - ~~Clean up task queue when a task is completed.~~
 - ~~Some kind of way to elegantly fail a job.~~
