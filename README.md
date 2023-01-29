@@ -131,6 +131,7 @@ I wanted to come back to flesh out some features, and perform refactor work. Add
 
 Exposing a func<bool> would offer greater control over when tasks would run, and would probably allow me to remove the start time and end time members of IJobbyJob.
 
+Also, wow do I need better tests. We should bring Moq into the test framework and start to work out some actual tests.
 
 ## Additional Features List
 - ~~Clean up task queue when a task is completed.~~

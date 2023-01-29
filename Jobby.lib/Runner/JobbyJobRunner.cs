@@ -52,10 +52,9 @@ namespace Jobby.Lib.Runner
             var taskToStart = new Task(() =>
             {
                 var nowAsTimeOnly = new TimeOnly(DateTime.Now.Hour, DateTime.Now.Minute);
-                var isAfterStartTime = nowAsTimeOnly > job.StartTime;
-                var isBeforeEndTime = nowAsTimeOnly < job.EndTime;
 
-                if (isAfterStartTime && isBeforeEndTime)
+
+                if (job.JobCondition())
                 {
                     try
                     {
@@ -67,20 +66,6 @@ namespace Jobby.Lib.Runner
                         _backingQueue.GetExceptionQueue(job.JobName).Add(e);
                     }
                     System.Threading.Thread.Sleep((int)job.CycleTime.TotalMilliseconds);
-                }
-                else
-                {
-                    var timeToWait = 0;
-                    if (!isAfterStartTime)
-                    {
-                        timeToWait = (int)(job.StartTime - nowAsTimeOnly).TotalMilliseconds;
-                    }
-                    else if (!isBeforeEndTime)
-                    {
-                        timeToWait = (int)(new TimeOnly(23, 59, 59, 999) - nowAsTimeOnly).TotalMilliseconds;
-                        timeToWait += (int)job.StartTime.ToTimeSpan().TotalMilliseconds;
-                    }
-                    System.Threading.Thread.Sleep(timeToWait);
                 }
             });
 

@@ -34,10 +34,13 @@ public class StringJob : IJobbyJob<string>
     public string JobName => "Simple String Job";
     public TimeSpan CycleTime => TimeSpan.FromMilliseconds(100);
     public TimeSpan TimeOut => TimeSpan.FromDays(1);
-    public TimeOnly StartTime => new(00, 00);
-    public TimeOnly EndTime => new(23, 59);
     public Guid Id => Guid.NewGuid();
     public int ConcurrentThreads => 2;
+
+    public Func<bool> JobCondition => () =>
+    {
+        return true;
+    };
 
     public string Run()
     {
