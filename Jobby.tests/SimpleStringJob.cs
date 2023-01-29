@@ -23,27 +23,41 @@ public class SimpleStringJob
     */
     #region Simple Job Setup Tests
     [Test]
-    public void TestJobQueueInit()
+    public void TestJobInit()
     {
+        Console.WriteLine("TestJobInit:");
         var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
         testRunner.StartJobs();
-        Assert.That(testRunner._backingQueue._JobQueueInternal.Any(x => x.Item1 == "Simple String Job"));
-    }
+        var queueInit = testRunner._backingQueue._JobQueueInternal.Any(x => x.Item1 == "Simple String Job");
+        var resultsInit = testRunner._backingQueue._JobResultInternal.Any(x => x.Item1 == "Simple String Job");
+        var errorInit = testRunner._backingQueue._JobErrorQueueInternal.Any(x => x.Item1 == "Simple String Job");
+        if (queueInit)
+        {
+            Console.WriteLine("\tJob Queue...√");
+        }
+        else
+        {
+            Console.WriteLine("\tJob Queue...x");
+        }
 
-    [Test]
-    public void TestResultQueueInit()
-    {
-        var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
-        testRunner.StartJobs();
-        Assert.That(testRunner._backingQueue._JobResultInternal.Any(x => x.Item1 == "Simple String Job"));
-    }
+        if (resultsInit)
+        {
+            Console.WriteLine("\tResults Queue...√");
+        }
+        else
+        {
+            Console.WriteLine("\tResults Queue...x");
+        }
+        if (errorInit)
+        {
+            Console.WriteLine("\tError Queue...√");
+        }
+        else
+        {
+            Console.WriteLine("\tError Queue...x");
+        }
 
-    [Test]
-    public void TestErrorQueueInit()
-    {
-        var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
-        testRunner.StartJobs();
-        Assert.That(testRunner._backingQueue._JobErrorQueueInternal.Any(x => x.Item1 == "Simple String Job"));
+        Assert.That(queueInit && resultsInit && errorInit);
     }
     #endregion
 
@@ -55,7 +69,7 @@ public class SimpleStringJob
         testRunner.StartJobs();
         Thread.Sleep(1000);
         var simpleStringJobResults = testRunner._backingQueue.GetJobResultQueue("Simple String Job");
-        Console.Write($"\tTotal Job Results: {simpleStringJobResults.Count}");
+        Console.Write($"\tMore than 0 Results");
         if (simpleStringJobResults.Count > 0)
         {
             Console.WriteLine("...√");
