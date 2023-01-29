@@ -18,6 +18,10 @@ public class SimpleStringJob
         _provider = _collection.BuildServiceProvider();
     }
 
+    /*
+    These tests are simply to confirm that, upon registration, the job queues are properly initialized.
+    */
+    #region Simple Job Setup Tests
     [Test]
     public void TestJobQueueInit()
     {
@@ -40,6 +44,27 @@ public class SimpleStringJob
         var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
         testRunner.StartJobs();
         Assert.That(testRunner._backingQueue._JobErrorQueueInternal.Any(x => x.Item1 == "Simple String Job"));
+    }
+    #endregion
+
+    [Test]
+    public void Ensure_JobPlacesResultsInQueue()
+    {
+        var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
+        Console.WriteLine("Ensure_JobPlacesResultsInQueue:");
+        testRunner.StartJobs();
+        Thread.Sleep(1000);
+        var simpleStringJobResults = testRunner._backingQueue.GetJobResultQueue("Simple String Job");
+        Console.Write($"\tTotal Job Results: {simpleStringJobResults.Count}");
+        if (simpleStringJobResults.Count > 0)
+        {
+            Console.WriteLine("...√");
+        }
+        else
+        {
+            Console.WriteLine("...x");
+        }
+        Assert.That(testRunner._backingQueue._JobResultInternal.Where(x => x.Item1 == "Simple String Job").Any(x => x.Item2.Count() > 1));
     }
 }
 
