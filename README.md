@@ -125,6 +125,12 @@ public int ConcurrentThreads => 2;
 ```
 When I start two instances of tasks for this object, is it truly a 'thread'? This is something I need to look into before I call it finished.
 
+### 1-28-23
+
+I wanted to come back to flesh out some features, and perform refactor work. Addressing the previous note; Right now, we have this notion of 'start date' and 'end date', but what if we wanted this to run according to some other metric. Perhaps; When a stored procedure runs data, or when some other task is completed?
+
+Exposing a func<bool> would offer greater control over when tasks would run, and would probably allow me to remove the start time and end time members of IJobbyJob.
+
 
 ## Additional Features List
 - ~~Clean up task queue when a task is completed.~~
