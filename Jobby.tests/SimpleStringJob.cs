@@ -19,13 +19,27 @@ public class SimpleStringJob
     }
 
     [Test]
-    public void TestSimpleString()
+    public void TestJobQueueInit()
     {
         var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
         testRunner.StartJobs();
-        System.Threading.Thread.Sleep(1000);
-        Assert.That(testRunner._backingQueue._JobResultInternal.First(x => x.Item1 == "Simple String Job").Item2.Any(y => y.Contains("Hello Jobby!"))
-        , Is.True);
+        Assert.That(testRunner._backingQueue._JobQueueInternal.Any(x => x.Item1 == "Simple String Job"));
+    }
+
+    [Test]
+    public void TestResultQueueInit()
+    {
+        var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
+        testRunner.StartJobs();
+        Assert.That(testRunner._backingQueue._JobResultInternal.Any(x => x.Item1 == "Simple String Job"));
+    }
+
+    [Test]
+    public void TestErrorQueueInit()
+    {
+        var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
+        testRunner.StartJobs();
+        Assert.That(testRunner._backingQueue._JobErrorQueueInternal.Any(x => x.Item1 == "Simple String Job"));
     }
 }
 

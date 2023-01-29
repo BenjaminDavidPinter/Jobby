@@ -12,6 +12,7 @@ namespace Jobby.Lib.Runner
         {
             _JobQueueInternal = new();
             _JobResultInternal = new();
+            _JobErrorQueueInternal = new();
         }
 
         public void AddJobToQueue(string queueName, Task job)
@@ -34,6 +35,7 @@ namespace Jobby.Lib.Runner
         {
             _JobQueueInternal.Add(Tuple.Create(queueName, new List<Task>()));
             _JobResultInternal.Add(Tuple.Create(queueName, new List<T>()));
+            _JobErrorQueueInternal.Add(Tuple.Create(queueName, new List<Exception>()));
         }
 
         public List<Exception> GetExceptionQueue(string queueName)
