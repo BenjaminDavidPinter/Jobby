@@ -41,16 +41,5 @@ namespace Jobby.Lib.Runner
             JobResults.Add((queueName, new List<T>()));
             JobErrors.Add((queueName, new List<Exception>()));
         }
-
-        public void IssueJobQueueCommand(string queueName, JobQueueCommand command)
-        {
-            foreach (var jobQueue in JobQueue.Where(x => x.Item1 == queueName))
-            {
-                foreach (var job in jobQueue.Item2)
-                {
-                    job.Start();
-                }
-            }
-        }
     }
 }
