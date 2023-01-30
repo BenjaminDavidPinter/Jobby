@@ -4,14 +4,14 @@ namespace Jobby.Lib.Runner
 {
     public class JobbyJobRunner<T> : IJobbyJobRunner<T>
     {
-        public IJobbyJobQueue<T> _backingQueue { get; set; }
+        private IJobbyJobQueue<T> BackingQueue { get; set; }
 
         public JobbyJobRunner(IJobbyJobQueue<T> backingQueue)
         {
-            _backingQueue = backingQueue;
+            BackingQueue = backingQueue;
         }
 
-        public IEnumerable<Type>? GetClassesForInterface(Type t)
+        private IEnumerable<Type>? GetClassesForInterface(Type t)
         {
             return AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
@@ -26,10 +26,10 @@ namespace Jobby.Lib.Runner
                 foreach (var job in applicableTypes)
                 {
                     var instance = Activator.CreateInstance(job) as IJobbyJob<T>;
-                    _backingQueue.InitializeJobQueues(instance.JobName);
+                    BackingQueue.InitializeJobQueues(instance.JobName);
                     for (int i = 0; i < instance.ConcurrentThreads; i++)
                     {
-                        _backingQueue.AddJobToQueue(instance.JobName, CreateJobbyTask(instance));
+                        BackingQueue.AddJobToQueue(instance.JobName, CreateJobbyTask(instance));
                     }
                 }
             }
@@ -59,21 +59,21 @@ namespace Jobby.Lib.Runner
                     try
                     {
                         var results = job.Run();
-                        _backingQueue.GetJobResultQueue(job.JobName).Add(results);
+                        BackingQueue.GetJobResultQueue(job.JobName).Add(results);
                     }
                     catch (Exception e)
                     {
-                        _backingQueue.GetExceptionQueue(job.JobName).Add(e);
+                        BackingQueue.GetExceptionQueue(job.JobName).Add(e);
                     }
-                    System.Threading.Thread.Sleep((int)job.CycleTime.TotalMilliseconds);
+                    Thread.Sleep((int)job.CycleTime.TotalMilliseconds);
                 }
             });
 
 
             taskToStart.ContinueWith((x) =>
             {
-                _backingQueue.GetJobQueue(job.JobName).RemoveAll(x => x.Status == TaskStatus.RanToCompletion);
-                _backingQueue.GetJobQueue(job.JobName).Add(CreateJobbyTask(job));
+                BackingQueue.GetJobQueue(job.JobName).RemoveAll(x => x.Status == TaskStatus.RanToCompletion);
+                BackingQueue.GetJobQueue(job.JobName).Add(CreateJobbyTask(job));
             });
 
             foreach (var cont in job.Continuations)
@@ -84,6 +84,21 @@ namespace Jobby.Lib.Runner
             taskToStart.Start();
 
             return taskToStart;
+        }
+
+        public List<T> GetResults(string queueName)
+        {
+            return BackingQueue.GetJobResultQueue(queueName);
+        }
+
+        public List<Exception> GetErrors(string queueName)
+        {
+            return BackingQueue.GetExceptionQueue(queueName);
+        }
+
+        public List<Task> GetJobQueue(string queueName)
+        {
+            return BackingQueue.GetJobQueue(queueName);
         }
     }
 }
