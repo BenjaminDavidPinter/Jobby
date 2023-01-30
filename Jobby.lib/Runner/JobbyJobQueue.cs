@@ -17,8 +17,7 @@ namespace Jobby.Lib.Runner
 
         public void AddJobToQueue(string queueName, Task job)
         {
-            var jobQueue = JobQueue.First(x => x.Item1 == queueName);
-            jobQueue.Item2.Add(job);
+            GetJobQueue(queueName).Add(job);
         }
 
         public List<Task> GetJobQueue(string queueName)
