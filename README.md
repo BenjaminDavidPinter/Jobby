@@ -147,4 +147,5 @@ I think it's time for a refactor; Namely, some members and properties are expose
 - Event Driven Task Continuations
     - Expose methods through IJobbyJob<T> which allow the user to control what happens when a jobby job fails/succeeds.
         - These methods should have some standard options for; 'RequeueJob', 'Wait(X Mills)' etc.
-- Add custom run conditions; ```Func<bool>``` which users can implement to stop their jobs from running accoding to some custom condition.
+- ~Add custom run conditions; ```Func<bool>``` which users can implement to stop their jobs from running accoding to some custom condition.~
+- Pass a CancellationToken to IJobbyJob<T> Run() method
