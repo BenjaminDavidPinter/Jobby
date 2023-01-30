@@ -4,9 +4,9 @@ namespace Jobby.Lib.Runner
 {
     public class JobbyJobQueue<T> : IJobbyJobQueue<T>
     {
-        public List<Tuple<string, List<Task>>> JobQueue { get; set; }
-        public List<Tuple<string, List<T>>> JobResults { get; set; }
-        public List<Tuple<string, List<Exception>>> JobErrors { get; set; }
+        public List<(string QueueName, List<Task> Jobs)> JobQueue { get; set; }
+        public List<(string QueueName, List<T> Results)> JobResults { get; set; }
+        public List<(string QueueName, List<Exception> Errors)> JobErrors { get; set; }
 
         public JobbyJobQueue()
         {
@@ -33,9 +33,9 @@ namespace Jobby.Lib.Runner
 
         public void InitializeJobQueues(string queueName)
         {
-            JobQueue.Add(Tuple.Create(queueName, new List<Task>()));
-            JobResults.Add(Tuple.Create(queueName, new List<T>()));
-            JobErrors.Add(Tuple.Create(queueName, new List<Exception>()));
+            JobQueue.Add((queueName, new List<Task>()));
+            JobResults.Add((queueName, new List<T>()));
+            JobErrors.Add((queueName, new List<Exception>()));
         }
 
         public List<Exception> GetExceptionQueue(string queueName)
