@@ -29,7 +29,7 @@ public class SimpleStringJob
         var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
         testRunner.StartJobs();
         var queueInit = testRunner._backingQueue.JobQueue.Any(x => x.Item1 == "Simple String Job");
-        var resultsInit = testRunner._backingQueue._JobResultInternal.Any(x => x.Item1 == "Simple String Job");
+        var resultsInit = testRunner._backingQueue.JobResults.Any(x => x.Item1 == "Simple String Job");
         var errorInit = testRunner._backingQueue._JobErrorQueueInternal.Any(x => x.Item1 == "Simple String Job");
         if (queueInit)
         {
@@ -78,7 +78,7 @@ public class SimpleStringJob
         {
             Console.WriteLine("...x");
         }
-        Assert.That(testRunner._backingQueue._JobResultInternal.Where(x => x.Item1 == "Simple String Job").Any(x => x.Item2.Count() > 1));
+        Assert.That(testRunner._backingQueue.JobResults.Where(x => x.Item1 == "Simple String Job").Any(x => x.Item2.Count() > 1));
     }
 }
 

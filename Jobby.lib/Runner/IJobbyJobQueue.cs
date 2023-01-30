@@ -5,7 +5,7 @@ namespace Jobby.Lib.Runner
     public interface IJobbyJobQueue<T>
     {
         List<Tuple<string, List<Task>>> JobQueue { get; set; }
-        List<Tuple<string, List<T>>> _JobResultInternal { get; set; }
+        List<Tuple<string, List<T>>> JobResults { get; set; }
         List<Tuple<string, List<Exception>>> _JobErrorQueueInternal { get; set; }
 
         void InitializeJobQueues(string queueName);

@@ -28,6 +28,6 @@ public class CoreInitialization
     {
         var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
         Assert.IsNotNull(testRunner._backingQueue.JobQueue);
-        Assert.IsNotNull(testRunner._backingQueue._JobResultInternal);
+        Assert.IsNotNull(testRunner._backingQueue.JobResults);
     }
 }
