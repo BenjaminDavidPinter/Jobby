@@ -133,6 +133,12 @@ Exposing a func<bool> would offer greater control over when tasks would run, and
 
 Also, wow do I need better tests. We should bring Moq into the test framework and start to work out some actual tests.
 
+### 1-30-23
+
+Sitting in the hospital this morning, waiting for my Popop to have some outpatient work done. Thinking about what the next best steps are for jobby. 
+
+I think it's time for a refactor; Namely, some members and properties are exposed which I had no initially expected to be, and they sit with ugly underscores before their name, and they have 'internal' appended to them. So let's spend the time to fix all those up first.
+
 ## Additional Features List
 - ~~Clean up task queue when a task is completed.~~
 - ~~Some kind of way to elegantly fail a job.~~

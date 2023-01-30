@@ -4,8 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Jobby.tests;
 public class CoreInitialization
 {
-    ServiceCollection _collection {get;set;}
-    ServiceProvider _provider {get;set;}
+    ServiceCollection _collection { get; set; }
+    ServiceProvider _provider { get; set; }
     [SetUp]
     public void Setup()
     {
@@ -24,9 +24,10 @@ public class CoreInitialization
     }
 
     [Test]
-    public void EnsureQueuesAreInitialized(){
+    public void EnsureQueuesAreInitialized()
+    {
         var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
-        Assert.IsNotNull(testRunner._backingQueue._JobQueueInternal);
+        Assert.IsNotNull(testRunner._backingQueue.JobQueue);
         Assert.IsNotNull(testRunner._backingQueue._JobResultInternal);
     }
 }

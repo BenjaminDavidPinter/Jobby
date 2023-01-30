@@ -28,7 +28,7 @@ public class SimpleStringJob
         Console.WriteLine("TestJobInit:");
         var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
         testRunner.StartJobs();
-        var queueInit = testRunner._backingQueue._JobQueueInternal.Any(x => x.Item1 == "Simple String Job");
+        var queueInit = testRunner._backingQueue.JobQueue.Any(x => x.Item1 == "Simple String Job");
         var resultsInit = testRunner._backingQueue._JobResultInternal.Any(x => x.Item1 == "Simple String Job");
         var errorInit = testRunner._backingQueue._JobErrorQueueInternal.Any(x => x.Item1 == "Simple String Job");
         if (queueInit)
