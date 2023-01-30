@@ -23,12 +23,17 @@ namespace Jobby.Lib.Runner
 
         public List<Task> GetJobQueue(string queueName)
         {
-            return JobQueue.First(x => x.Item1 == queueName).Item2;
+            return JobQueue.First(x => x.QueueName == queueName).Jobs;
         }
 
         public List<T> GetJobResultQueue(string queueName)
         {
-            return JobResults.First(x => x.Item1 == queueName).Item2;
+            return JobResults.First(x => x.QueueName == queueName).Results;
+        }
+
+        public List<Exception> GetExceptionQueue(string queueName)
+        {
+            return JobErrors.First(x => x.QueueName == queueName).Errors;
         }
 
         public void InitializeJobQueues(string queueName)
@@ -36,11 +41,6 @@ namespace Jobby.Lib.Runner
             JobQueue.Add((queueName, new List<Task>()));
             JobResults.Add((queueName, new List<T>()));
             JobErrors.Add((queueName, new List<Exception>()));
-        }
-
-        public List<Exception> GetExceptionQueue(string queueName)
-        {
-            return JobErrors.First(x => x.Item1 == queueName).Item2;
         }
 
         public void IssueJobQueueCommand(string queueName, JobQueueCommand command)
