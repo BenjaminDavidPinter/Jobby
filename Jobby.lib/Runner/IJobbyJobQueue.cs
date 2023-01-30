@@ -6,7 +6,7 @@ namespace Jobby.Lib.Runner
     {
         List<Tuple<string, List<Task>>> JobQueue { get; set; }
         List<Tuple<string, List<T>>> JobResults { get; set; }
-        List<Tuple<string, List<Exception>>> _JobErrorQueueInternal { get; set; }
+        List<Tuple<string, List<Exception>>> JobErrors { get; set; }
 
         void InitializeJobQueues(string queueName);
         void AddJobToQueue(string queueName, Task job);
