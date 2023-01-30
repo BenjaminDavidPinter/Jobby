@@ -131,6 +131,13 @@ I wanted to come back to flesh out some features, and perform refactor work. Add
 
 Exposing a func<bool> would offer greater control over when tasks would run, and would probably allow me to remove the start time and end time members of IJobbyJob.
 
+Also, wow do I need better tests. We should bring Moq into the test framework and start to work out some actual tests.
+
+### 1-30-23
+
+Sitting in the hospital this morning, waiting for my Popop to have some outpatient work done. Thinking about what the next best steps are for jobby. 
+
+I think it's time for a refactor; Namely, some members and properties are exposed which I had no initially expected to be, and they sit with ugly underscores before their name, and they have 'internal' appended to them. So let's spend the time to fix all those up first.
 
 ## Additional Features List
 - ~~Clean up task queue when a task is completed.~~
@@ -140,4 +147,5 @@ Exposing a func<bool> would offer greater control over when tasks would run, and
 - Event Driven Task Continuations
     - Expose methods through IJobbyJob<T> which allow the user to control what happens when a jobby job fails/succeeds.
         - These methods should have some standard options for; 'RequeueJob', 'Wait(X Mills)' etc.
-- Add custom run conditions; ```Func<bool>``` which users can implement to stop their jobs from running accoding to some custom condition.
+- ~Add custom run conditions; ```Func<bool>``` which users can implement to stop their jobs from running accoding to some custom condition.~
+- Pass a CancellationToken to IJobbyJob<T> Run() method
