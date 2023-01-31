@@ -5,17 +5,17 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Jobby.tests;
 public class SimpleStringJob
 {
-    ServiceCollection _collection { get; set; }
-    ServiceProvider _provider { get; set; }
+    private ServiceCollection? ServCollection { get; set; }
+    private ServiceProvider? ServProvider { get; set; }
 
     [SetUp]
     public void Setup()
     {
-        _collection = new();
-        _collection.AddScoped(typeof(IJobbyJobRunner<>), typeof(JobbyJobRunner<>));
-        _collection.AddScoped(typeof(IJobbyJobQueue<>), typeof(JobbyJobQueue<>));
+        ServCollection = new();
+        ServCollection.AddScoped(typeof(IJobbyJobRunner<>), typeof(JobbyJobRunner<>));
+        ServCollection.AddScoped(typeof(IJobbyJobQueue<>), typeof(JobbyJobQueue<>));
 
-        _provider = _collection.BuildServiceProvider();
+        ServProvider = ServCollection.BuildServiceProvider();
     }
 
     /*
@@ -25,13 +25,14 @@ public class SimpleStringJob
     [Test]
     public void TestJobInit()
     {
+        string queueName = "Simple String Job";
         Console.WriteLine("TestJobInit:");
-        var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
+        var testRunner = ServProvider.GetService<IJobbyJobRunner<string>>();
         testRunner.StartJobs();
-        var queueInit = testRunner._backingQueue.JobQueue.Any(x => x.Item1 == "Simple String Job");
-        var resultsInit = testRunner._backingQueue.JobResults.Any(x => x.Item1 == "Simple String Job");
-        var errorInit = testRunner._backingQueue.JobErrors.Any(x => x.Item1 == "Simple String Job");
-        if (queueInit)
+        var queueInit = testRunner.GetJobQueue(queueName);
+        var resultsInit = testRunner.GetResults(queueName);
+        var errorInit = testRunner.GetErrors(queueName);
+        if (queueInit != null)
         {
             Console.WriteLine("\tJob Queue...√");
         }
@@ -40,7 +41,7 @@ public class SimpleStringJob
             Console.WriteLine("\tJob Queue...x");
         }
 
-        if (resultsInit)
+        if (resultsInit != null)
         {
             Console.WriteLine("\tResults Queue...√");
         }
@@ -48,7 +49,7 @@ public class SimpleStringJob
         {
             Console.WriteLine("\tResults Queue...x");
         }
-        if (errorInit)
+        if (errorInit != null)
         {
             Console.WriteLine("\tError Queue...√");
         }
@@ -57,18 +58,18 @@ public class SimpleStringJob
             Console.WriteLine("\tError Queue...x");
         }
 
-        Assert.That(queueInit && resultsInit && errorInit);
+        Assert.That(queueInit != null && resultsInit != null && errorInit != null);
     }
     #endregion
 
     [Test]
     public void Ensure_JobPlacesResultsInQueue()
     {
-        var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
+        var testRunner = ServProvider.GetService<IJobbyJobRunner<string>>();
         Console.WriteLine("Ensure_JobPlacesResultsInQueue:");
         testRunner.StartJobs();
         Thread.Sleep(1000);
-        var simpleStringJobResults = testRunner._backingQueue.GetJobResultQueue("Simple String Job");
+        var simpleStringJobResults = testRunner.GetJobQueue("Simple String Job");
         Console.Write($"\tMore than 0 Results");
         if (simpleStringJobResults.Count > 0)
         {
@@ -78,7 +79,7 @@ public class SimpleStringJob
         {
             Console.WriteLine("...x");
         }
-        Assert.That(testRunner._backingQueue.JobResults.Where(x => x.Item1 == "Simple String Job").Any(x => x.Item2.Count() > 1));
+        Assert.That(testRunner.GetResults("Simple String Job").Count, Is.GreaterThan(1));
     }
 }
 

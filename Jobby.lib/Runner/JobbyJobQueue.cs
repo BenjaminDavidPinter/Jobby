@@ -17,8 +17,7 @@ namespace Jobby.Lib.Runner
 
         public void AddJobToQueue(string queueName, Task job)
         {
-            var jobQueue = JobQueue.First(x => x.Item1 == queueName);
-            jobQueue.Item2.Add(job);
+            GetJobQueue(queueName).Add(job);
         }
 
         public List<Task> GetJobQueue(string queueName)
@@ -41,17 +40,6 @@ namespace Jobby.Lib.Runner
             JobQueue.Add((queueName, new List<Task>()));
             JobResults.Add((queueName, new List<T>()));
             JobErrors.Add((queueName, new List<Exception>()));
-        }
-
-        public void IssueJobQueueCommand(string queueName, JobQueueCommand command)
-        {
-            foreach (var jobQueue in JobQueue.Where(x => x.Item1 == queueName))
-            {
-                foreach (var job in jobQueue.Item2)
-                {
-                    job.Start();
-                }
-            }
         }
     }
 }
