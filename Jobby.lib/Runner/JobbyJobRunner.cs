@@ -11,7 +11,7 @@ namespace Jobby.Lib.Runner
             BackingQueue = backingQueue;
         }
 
-        private IEnumerable<Type>? GetClassesForInterface(Type t)
+        private static IEnumerable<Type>? GetClassesForInterface(Type t)
         {
             return AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
@@ -26,6 +26,7 @@ namespace Jobby.Lib.Runner
                 foreach (var job in applicableTypes)
                 {
                     var instance = Activator.CreateInstance(job) as IJobbyJob<T>;
+                    if (instance == null) throw new Exception("Error while creating job queues");
                     BackingQueue.InitializeJobQueues(instance.JobName);
                     for (int i = 0; i < instance.ConcurrentThreads; i++)
                     {
