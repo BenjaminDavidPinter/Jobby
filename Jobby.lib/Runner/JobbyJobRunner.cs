@@ -25,8 +25,7 @@ namespace Jobby.Lib.Runner
             {
                 foreach (var job in applicableTypes)
                 {
-                    var instance = Activator.CreateInstance(job) as IJobbyJob<T>;
-                    if (instance == null) throw new Exception("Error while creating job queues");
+                    if (Activator.CreateInstance(job) is not IJobbyJob<T> instance) throw new Exception("Error while creating job queues");
                     BackingQueue.InitializeJobQueues(instance.JobName);
                     for (int i = 0; i < instance.ConcurrentThreads; i++)
                     {
