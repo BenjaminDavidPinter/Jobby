@@ -5,17 +5,17 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Jobby.tests;
 public class SimpleStringJob
 {
-    ServiceCollection _collection { get; set; }
-    ServiceProvider _provider { get; set; }
+    private ServiceCollection? ServCollection { get; set; }
+    private ServiceProvider? ServProvider { get; set; }
 
     [SetUp]
     public void Setup()
     {
-        _collection = new();
-        _collection.AddScoped(typeof(IJobbyJobRunner<>), typeof(JobbyJobRunner<>));
-        _collection.AddScoped(typeof(IJobbyJobQueue<>), typeof(JobbyJobQueue<>));
+        ServCollection = new();
+        ServCollection.AddScoped(typeof(IJobbyJobRunner<>), typeof(JobbyJobRunner<>));
+        ServCollection.AddScoped(typeof(IJobbyJobQueue<>), typeof(JobbyJobQueue<>));
 
-        _provider = _collection.BuildServiceProvider();
+        ServProvider = ServCollection.BuildServiceProvider();
     }
 
     /*
@@ -27,7 +27,7 @@ public class SimpleStringJob
     {
         string queueName = "Simple String Job";
         Console.WriteLine("TestJobInit:");
-        var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
+        var testRunner = ServProvider.GetService<IJobbyJobRunner<string>>();
         testRunner.StartJobs();
         var queueInit = testRunner.GetJobQueue(queueName);
         var resultsInit = testRunner.GetResults(queueName);
@@ -65,7 +65,7 @@ public class SimpleStringJob
     [Test]
     public void Ensure_JobPlacesResultsInQueue()
     {
-        var testRunner = _provider.GetService<IJobbyJobRunner<string>>();
+        var testRunner = ServProvider.GetService<IJobbyJobRunner<string>>();
         Console.WriteLine("Ensure_JobPlacesResultsInQueue:");
         testRunner.StartJobs();
         Thread.Sleep(1000);
