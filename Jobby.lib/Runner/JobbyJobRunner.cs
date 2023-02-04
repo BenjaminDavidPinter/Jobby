@@ -5,10 +5,12 @@ namespace Jobby.Lib.Runner
     public class JobbyJobRunner<T> : IJobbyJobRunner<T>
     {
         private IJobbyJobQueue<T> BackingQueue { get; set; }
+        private CancellationTokenSource TokenSource { get; set; }
 
         public JobbyJobRunner(IJobbyJobQueue<T> backingQueue)
         {
             BackingQueue = backingQueue;
+            TokenSource = new();
         }
 
         private static IEnumerable<Type>? GetClassesForInterface(Type t)
@@ -16,6 +18,11 @@ namespace Jobby.Lib.Runner
             return AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(p => t.IsAssignableFrom(p));
+        }
+
+        public void StopJobs()
+        {
+            TokenSource.Cancel();
         }
 
         public void StartJobs()
@@ -58,7 +65,7 @@ namespace Jobby.Lib.Runner
                 {
                     try
                     {
-                        var results = job.Run();
+                        var results = job.Run(TokenSource.Token);
                         BackingQueue.GetJobResultQueue(job.JobName).Add(results);
                     }
                     catch (Exception e)

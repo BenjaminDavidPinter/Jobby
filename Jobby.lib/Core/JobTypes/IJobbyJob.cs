@@ -9,7 +9,7 @@ namespace Jobby.lib.Core.JobTypes
         TimeSpan TimeOut => TimeSpan.FromHours(1);
         Func<bool> JobCondition { get; }
         int ConcurrentThreads => 1;
-        T Run();
+        T Run(CancellationToken token);
         List<(Action<Task, object?>, TaskContinuationOptions)> Continuations => new();
     }
 }

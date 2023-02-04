@@ -96,7 +96,7 @@ public class StringJob : IJobbyJob<string>
         return true;
     };
 
-    public string Run()
+    public string Run(CancellationToken token)
     {
         return $"Hello Jobby! {DateTime.Now}";
     }

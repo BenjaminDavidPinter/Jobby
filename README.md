@@ -150,6 +150,13 @@ if (Activator.CreateInstance(job) is not IJobbyJob<T> instance) throw new Except
 
 Which I assume helps reduce the chance of a null reference being thrown. I think key is here, I need to spend more time learning about null coalesce, and ways to deal with null objects in the future.
 
+### 2-4-23
+We're back. 
+
+I was writing some code in Rustlings, to play a little bit in Rust. I wish the contributions counted toward my github char though :(
+
+Anway. The next thing we should do, is write some tests for jobby's continuation clauses. Just to confirm that they do what we think they do.
+
 ## Additional Features List
 - ~~Clean up task queue when a task is completed.~~
 - ~~Some kind of way to elegantly fail a job.~~
