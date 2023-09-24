@@ -154,6 +154,12 @@ if (Activator.CreateInstance(job) is not IJobbyJob<T> instance) throw new Except
 Which I assume helps reduce the chance of a null reference being thrown. I think key is here,
 I need to spend more time learning about null coalesce, and ways to deal with null objects in the future.
 
+### 9-24-23
+Back at it.
+
+Enforced that jobs extend a particular class ```JobbyJobResult```, in order to include additional metadata about
+the job when it's running. The first of which is benchmarks.
+
 ## Additional Features List
 - ~~Clean up task queue when a task is completed.~~
 - ~~Some kind of way to elegantly fail a job.~~
