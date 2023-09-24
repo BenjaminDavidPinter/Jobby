@@ -70,16 +70,30 @@ public class SimpleStringJob
         Console.WriteLine("Ensure_JobPlacesResultsInQueue:");
         testRunner.StartJobs();
         Thread.Sleep(1000);
-        var simpleStringJobResults = testRunner.GetJobQueue("Simple String Job");
-        Console.Write($"\tMore than 0 Results");
-        if (simpleStringJobResults.Count > 0)
+        var simpleStringJobTasks = testRunner.GetJobQueue("Simple String Job");
+        Console.Write($"\tMore than 0 Tasks");
+        if (simpleStringJobTasks.Count > 0)
         {
-            Console.WriteLine("...√");
+            Console.WriteLine($"...√ ({simpleStringJobTasks.Count} active jobs)");
         }
         else
         {
             Console.WriteLine("...x");
         }
+
+        var simpleStringJobResults = testRunner.GetResults("Simple String Job");
+        Console.Write($"\tMore than 0 Results");
+        if (simpleStringJobResults.Count > 0)
+        {
+            Console.WriteLine($"...√ ({simpleStringJobResults.Count} results)");
+        }
+        else
+        {
+            Console.WriteLine("...x");
+        }
+
+        Console.WriteLine($"\tLongest Runtime...{simpleStringJobResults.OrderByDescending(x => x.Runtime).First().Runtime}");
+
         Assert.That(testRunner.GetResults("Simple String Job").Count, Is.GreaterThan(1));
     }
 }
@@ -90,7 +104,7 @@ public class StringJob : IJobbyJob<SimpleStringJobResult>
     public TimeSpan CycleTime => TimeSpan.FromMilliseconds(100);
     public TimeSpan TimeOut => TimeSpan.FromDays(1);
     public Guid Id => Guid.NewGuid();
-    public int ConcurrentThreads => 2;
+    public int ConcurrentThreads => 10;
 
     public Func<bool> JobCondition => () =>
     {

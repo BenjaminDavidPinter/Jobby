@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Jobby.lib.Core.JobTypes;
 using Jobby.lib.Core.Model;
 
@@ -53,14 +54,16 @@ namespace Jobby.Lib.Runner
         {
             var taskToStart = new Task(() =>
             {
-                var nowAsTimeOnly = new TimeOnly(DateTime.Now.Hour, DateTime.Now.Minute);
-
+                Stopwatch jobTimer = new();
 
                 if (job.JobCondition())
                 {
                     try
                     {
+                        jobTimer.Start();
                         var results = job.Run();
+                        jobTimer.Stop();
+                        results.Runtime = jobTimer.Elapsed;
                         BackingQueue.GetJobResultQueue(job.JobName).Add(results);
                     }
                     catch (Exception e)
