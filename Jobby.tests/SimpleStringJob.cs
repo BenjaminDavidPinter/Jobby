@@ -106,11 +106,19 @@ public class StringJob : IJobbyJob<SimpleStringJobResult>
     public Guid Id => Guid.NewGuid();
     public int ConcurrentThreads => 10;
 
+    //TODO: Allow for specific failure types
+    //TODO: public bool OnFailure => FailureType.Stop | FailureType.Delay | FailureType.Continue;
+
+    //TODO: Allow for total failures before stopping?
+    //TODO: public int MaxFailure => 5;
+
+    //NOTE: Determine if this job is eligible to run.
     public Func<bool> JobCondition => () =>
     {
         return true;
     };
 
+    //Do your thing inside the job.
     public SimpleStringJobResult Run()
     {
         return new() { Foo = "Hello World!"};

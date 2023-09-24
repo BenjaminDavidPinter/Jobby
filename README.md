@@ -170,3 +170,5 @@ the job when it's running. The first of which is benchmarks.
         - These methods should have some standard options for;'RequeueJob', 'Wait(X Mills)' etc.
 - ~Add custom run conditions; ```Func<bool>``` which users can implement to stop their jobs from running accoding to some custom condition.~
 - Pass a CancellationToken to IJobbyJob<T> Run() method
+- ~~Benchmark Jobs~~
+- ~~Disambiguate Jobs~~
