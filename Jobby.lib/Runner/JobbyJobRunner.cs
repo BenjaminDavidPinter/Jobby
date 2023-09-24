@@ -1,8 +1,9 @@
 using Jobby.lib.Core.JobTypes;
+using Jobby.lib.Core.Model;
 
 namespace Jobby.Lib.Runner
 {
-    public class JobbyJobRunner<T> : IJobbyJobRunner<T>
+    public class JobbyJobRunner<T> : IJobbyJobRunner<T> where T: JobbyJobResult
     {
         private IJobbyJobQueue<T> BackingQueue { get; set; }
 
@@ -41,10 +42,11 @@ namespace Jobby.Lib.Runner
 
         TODO:
             - Better error handling
-            - Right now, the backing queue which holds jobs (_backingQueue.JobQueueInternal), is cleaned up after each child task of the same type
-                is completed by running _backingQueue._JobQueueInternal.First(x => x.Item1 == job.JobName).Item2.RemoveAll(x => x.Status == TaskStatus.RanToCompletion);.
-                Because there may be multiple instances of the same task running within a queue, it might be dangerous to allow them all to try and clean this queue, 
-                at the same time.
+            - Right now, the backing queue which holds jobs (_backingQueue.JobQueueInternal), is cleaned up after
+            each child task of the same type is completed by running
+            _backingQueue._JobQueueInternal.First(x => x.Item1 == job.JobName).Item2.RemoveAll(x => x.Status == TaskStatus.RanToCompletion);.
+            Because there may be multiple instances of the same task running within a queue, it might be dangerous
+            to allow them all to try and clean this queue, at the same time.
             
         */
         private Task CreateJobbyTask(IJobbyJob<T> job)

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Jobby.lib.Core.Model;
 namespace Jobby.lib.Core.JobTypes
 {
-    public interface IJobbyJob<T>
+    public interface IJobbyJob<T> where T: JobbyJobResult
     {
         Guid Id { get; }
         string JobName { get; }

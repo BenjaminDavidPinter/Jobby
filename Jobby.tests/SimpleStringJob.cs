@@ -1,4 +1,5 @@
 using Jobby.lib.Core.JobTypes;
+using Jobby.lib.Core.Model;
 using Jobby.Lib.Runner;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,7 +28,7 @@ public class SimpleStringJob
     {
         string queueName = "Simple String Job";
         Console.WriteLine("TestJobInit:");
-        var testRunner = ServProvider.GetService<IJobbyJobRunner<string>>();
+        var testRunner = ServProvider.GetService<IJobbyJobRunner<SimpleStringJobResult>>();
         testRunner.StartJobs();
         var queueInit = testRunner.GetJobQueue(queueName);
         var resultsInit = testRunner.GetResults(queueName);
@@ -65,7 +66,7 @@ public class SimpleStringJob
     [Test]
     public void Ensure_JobPlacesResultsInQueue()
     {
-        var testRunner = ServProvider.GetService<IJobbyJobRunner<string>>();
+        var testRunner = ServProvider.GetService<IJobbyJobRunner<SimpleStringJobResult>>();
         Console.WriteLine("Ensure_JobPlacesResultsInQueue:");
         testRunner.StartJobs();
         Thread.Sleep(1000);
@@ -83,7 +84,7 @@ public class SimpleStringJob
     }
 }
 
-public class StringJob : IJobbyJob<string>
+public class StringJob : IJobbyJob<SimpleStringJobResult>
 {
     public string JobName => "Simple String Job";
     public TimeSpan CycleTime => TimeSpan.FromMilliseconds(100);
@@ -96,8 +97,13 @@ public class StringJob : IJobbyJob<string>
         return true;
     };
 
-    public string Run()
+    public SimpleStringJobResult Run()
     {
-        return $"Hello Jobby! {DateTime.Now}";
+        return new() { Foo = "Hello World!"};
     }
+}
+
+public class SimpleStringJobResult : JobbyJobResult
+{
+    public string Foo {get;set;}
 }

@@ -141,14 +141,18 @@ I think it's time for a refactor; Namely, some members and properties are expose
 
 ### 1-31-23
 
-Last night, I spent time dealing with compiler warnings. Namely some warnings for deref'ing null pointers, and there's still more to be done. It certainly brought up some of my weaknesses in C#. I *can* ensure that we don't get null reference exceptions, but there's so many ways to do it, that I can't be sure which is optimal.
+Last night, I spent time dealing with compiler warnings.
+Namely some warnings for deref'ing null pointers, and there's still more to be done.
+It certainly brought up some of my weaknesses in C#. I *can* ensure that we don't get null reference
+exceptions, but there's so many ways to do it, that I can't be sure which is optimal.
 
 I learned about some crazy new syntax last night;
 ```csharp
 if (Activator.CreateInstance(job) is not IJobbyJob<T> instance) throw new Exception("Error while creating job queues");
 ```
 
-Which I assume helps reduce the chance of a null reference being thrown. I think key is here, I need to spend more time learning about null coalesce, and ways to deal with null objects in the future.
+Which I assume helps reduce the chance of a null reference being thrown. I think key is here,
+I need to spend more time learning about null coalesce, and ways to deal with null objects in the future.
 
 ## Additional Features List
 - ~~Clean up task queue when a task is completed.~~
@@ -157,6 +161,6 @@ Which I assume helps reduce the chance of a null reference being thrown. I think
 - ~~Specify number of threads on a job~~
 - Event Driven Task Continuations
     - Expose methods through IJobbyJob<T> which allow the user to control what happens when a jobby job fails/succeeds.
-        - These methods should have some standard options for; 'RequeueJob', 'Wait(X Mills)' etc.
+        - These methods should have some standard options for;'RequeueJob', 'Wait(X Mills)' etc.
 - ~Add custom run conditions; ```Func<bool>``` which users can implement to stop their jobs from running accoding to some custom condition.~
 - Pass a CancellationToken to IJobbyJob<T> Run() method
